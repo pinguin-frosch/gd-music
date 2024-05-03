@@ -32,12 +32,13 @@ func main() {
 			continue
 		}
 		songUrl, err := getSongUrl(l.Id)
+		state.CheckedIds[l.Id] = true
+
 		if err != nil {
 			fmt.Println(err)
 			continue
 		}
 
-		state.CheckedIds[l.Id] = true
 		_, ok := state.SongUrls[songUrl]
 		if !ok {
 			state.SongUrls[songUrl] = 0
