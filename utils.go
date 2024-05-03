@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 )
@@ -24,4 +25,9 @@ func usage() {
 	fmt.Printf("Usage: %v FILE\n\n", prog)
 	fmt.Printf("FILE: Filepath of the file with the levels info in json format\n")
 	os.Exit(1)
+}
+
+func getSongInfoOnline(levelId int) (int, error) {
+	// TODO: usar gdbrowser.com para obtener esta información
+	return levelId, errors.New("not implemented")
 }
