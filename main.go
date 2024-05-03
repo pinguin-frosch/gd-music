@@ -17,8 +17,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	urls := make([]string, 0)
+	state := getState()
+	fmt.Printf("%+v\n", state)
+
 	for _, l := range levels {
+		fmt.Printf("%v", l.Id)
+		if state.CheckedIds[l.Id] {
+			fmt.Println(" skipped")
+			continue
+		}
+		fmt.Println()
+
 		if l.Type != "Online" {
 			continue
 		}
@@ -27,8 +36,16 @@ func main() {
 			fmt.Println(err)
 			continue
 		}
-		urls = append(urls, songUrl)
+
+		state.CheckedIds[l.Id] = true
+		_, ok := state.SongUrls[songUrl]
+		if !ok {
+			state.SongUrls[songUrl] = 0
+		}
+		state.SongUrls[songUrl] += 1
+
+		state.Save()
 	}
 
-	fmt.Println(urls)
+	fmt.Printf("%+v\n", state.SongUrls)
 }
