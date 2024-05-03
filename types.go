@@ -16,6 +16,11 @@ type State struct {
 	SongUrls   map[string]int `json:"song_urls"`
 }
 
+type SongInfo struct {
+	Url   string
+	Count int
+}
+
 func getState() *State {
 	bytes, err := os.ReadFile("state.json")
 	if err != nil {

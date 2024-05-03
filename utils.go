@@ -1,11 +1,13 @@
 package main
 
 import (
+	"cmp"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"os"
+	"slices"
 
 	"github.com/andybalholm/cascadia"
 	"golang.org/x/net/html"
@@ -73,4 +75,24 @@ func querySelector(n *html.Node, query string) *html.Node {
 		return &html.Node{}
 	}
 	return cascadia.Query(n, sel)
+}
+
+func (s *State) SaveSongs() {
+	songs := make([]SongInfo, 0, len(s.SongUrls))
+	for url, count := range s.SongUrls {
+		songs = append(songs, SongInfo{
+			Url:   url,
+			Count: count,
+		})
+	}
+	slices.SortFunc(songs, func(a, b SongInfo) int {
+		return cmp.Compare(a.Count, b.Count)
+	})
+
+	data := ""
+	for _, s := range songs {
+		data += fmt.Sprintf("%d %s\n", s.Count, s.Url)
+	}
+	bytes := []byte(data)
+	os.WriteFile("songs.txt", bytes, 0644)
 }

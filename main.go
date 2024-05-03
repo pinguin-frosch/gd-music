@@ -48,5 +48,5 @@ func main() {
 		state.Save()
 	}
 
-	fmt.Printf("%+v\n", state.SongUrls)
+	state.SaveSongs()
 }
